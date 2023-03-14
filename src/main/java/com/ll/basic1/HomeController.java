@@ -64,7 +64,23 @@ public class HomeController {
             return "%d번 사람이 삭제되었습니다.".formatted(id);
         }
 
-        return "%d번 사람은 존재하지않습니다.".formatted(id);
+        return "%d번 사람은 존재하지 않습니다.".formatted(id);
+    }
+
+    @GetMapping("/home/modifyPerson")
+    @ResponseBody
+    public String modifyPeople(@RequestParam int id, String name, int age) {
+
+        People findPeople = people.stream().
+                filter(p -> p.getId() == id)
+                .findFirst()
+                .orElse(null);
+        if (findPeople == null) {
+            return "%d번 사람은 존재하지 않습니다.".formatted(id);
+        }
+        findPeople.setName(name);
+        findPeople.setAge(age);
+        return "%d번 사람이 수정되었습니다.".formatted(id);
     }
 
     @GetMapping("/home/people")
