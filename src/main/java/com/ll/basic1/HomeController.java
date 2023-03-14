@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -16,7 +15,7 @@ public class HomeController {
 
     public HomeController() {
         count = -1;
-        people = new ArrayList<>();i
+        people = new ArrayList<>();
     }
 
     @GetMapping("/home/main")
@@ -56,12 +55,21 @@ public class HomeController {
         return "%d번 사람이 추가되었습니다.".formatted(p.getId());
     }
 
+    @GetMapping("/home/removePerson")
+    @ResponseBody
+    public String removePeople(@RequestParam int id) {
+        // 조건에 맞는걸 찾았고 삭제까지 되었다면 true. 아니면 false
+        boolean removed = people.removeIf(e -> e.getId() == id);
+        if (removed) {
+            return "%d번 사람이 삭제되었습니다.".formatted(id);
+        }
+
+        return "%d번 사람은 존재하지않습니다.".formatted(id);
+    }
+
     @GetMapping("/home/people")
     @ResponseBody
     public List<People> showPeople() {
         return people;
-//        return "[\n" + people.stream().
-//                map(e -> e.toString() + "")
-//                .collect(Collectors.joining(",\n")) + "\n]";
     }
 }
