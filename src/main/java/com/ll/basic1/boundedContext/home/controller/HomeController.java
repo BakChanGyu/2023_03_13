@@ -6,6 +6,7 @@ import com.ll.basic1.boundedContext.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,13 +18,17 @@ import java.util.*;
 @Controller
 public class HomeController {
     private int count;
-    public static List<Person> people;
+    public final List<Person> people;
+
+    // 필드주입
+    @Autowired
     private MemberService memberService;
 
 
-    public HomeController() {
+    public HomeController(MemberService memberService) {
         count = -1;
         people = new ArrayList<>();
+        this.memberService = memberService;
     }
 
     @GetMapping("/home/main")

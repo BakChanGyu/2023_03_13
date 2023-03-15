@@ -3,6 +3,7 @@ package com.ll.basic1.boundedContext.member.controller;
 import com.ll.basic1.base.RsData;
 import com.ll.basic1.boundedContext.member.entitiy.Member;
 import com.ll.basic1.boundedContext.member.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -11,10 +12,13 @@ import java.util.List;
 
 @Controller
 public class MemberController {
+
     private final MemberService memberService;
 
-    public MemberController() {
-        memberService = new MemberService();
+    // 생성자주입
+    @Autowired
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @GetMapping("/member/login")
@@ -31,17 +35,12 @@ public class MemberController {
         return memberService.tryLogin(username, password);
     }
 
-    @GetMapping("/member/addMember")
-    @ResponseBody
-    public String addMember(String username, String password) {
+//    @GetMapping("/member/addMember")
+//    @ResponseBody
+//    public String addMember(String username, String password) {
+//
+//        memberService.addMember(username, password);
+//        return "%s 회원이 추가되었습니다.".formatted(username);
+//    }
 
-        memberService.addMember(username, password);
-        return "%s 회원이 추가되었습니다.".formatted(username);
-    }
-
-    @GetMapping("/member/list")
-    @ResponseBody
-    public List<Member> listMember() {
-        return memberService.listMember();
-    }
 }
