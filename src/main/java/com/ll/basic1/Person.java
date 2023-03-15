@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class People {
+public class Person {
     private static int lastId;
     private int id;
     private String name;
@@ -18,7 +18,7 @@ public class People {
     static {
         lastId = 0;
     }
-    public People(String name, int age) {
+    public Person(String name, int age) {
         this(++lastId, name, age);
     }
 }
