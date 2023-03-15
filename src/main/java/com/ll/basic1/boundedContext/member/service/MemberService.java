@@ -3,6 +3,8 @@ package com.ll.basic1.boundedContext.member.service;
 import com.ll.basic1.base.RsData;
 import com.ll.basic1.boundedContext.member.entitiy.Member;
 import com.ll.basic1.boundedContext.member.repository.MemberRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +27,13 @@ public class MemberService {
             return RsData.of("F-2", "%s(은)는 존재하지 않는 회원입니다.".formatted(username));
         }
 
-        return RsData.of("S-1", "%s 님 환영합니다.".formatted(username));
+        return RsData.of("S-1", "%s 님 환영합니다.".formatted(username), member.getId());
     }
     public Member findByUsername(String username) {
         return memberRepository.findByUsername(username);
+    }
+
+    public Member findById(long id) {
+        return memberRepository.findById(id);
     }
 }
