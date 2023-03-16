@@ -6,25 +6,21 @@ import com.ll.basic1.base.rq.Rq;
 import com.ll.basic1.boundedContext.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@AllArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-
-    // 생성자주입
-    @Autowired
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
+    private final Rq rq;
 
     @GetMapping("/member/login")
     @ResponseBody
-    public RsData login(String username, String password, HttpServletRequest req, HttpServletResponse resp) {
-        Rq rq = new Rq(req, resp);
+    public RsData login(String username, String password) {
 
         if (username == null || username.trim().length() ==0 ) {
             return RsData.of("F-3", "username(을)을 입력해주세요.");
@@ -38,16 +34,15 @@ public class MemberController {
 
         if (rsData.isSuccess()) {
             Member member = (Member) rsData.getData();
-            rq.setCookie("loginedMemberId", member.getId());
+            rq.setSession("loginedMemberId", member.getId());
         }
         return rsData;
     }
 
     @GetMapping("/member/logout")
     @ResponseBody
-    public RsData logout(HttpServletRequest req, HttpServletResponse resp) {
-        Rq rq = new Rq(req, resp);
-        boolean cookieRemoved = rq.removeCookie("loginedMemberId");
+    public RsData logout() {
+        boolean cookieRemoved = rq.removeSession("loginedMemberId");
 
         if (cookieRemoved == false) {
             return RsData.of("S-2", "이미 로그아웃 상태입니다.");
@@ -58,10 +53,9 @@ public class MemberController {
 
     @GetMapping("/member/me")
     @ResponseBody
-    public RsData showMe(HttpServletRequest req, HttpServletResponse resp) {
-        Rq rq = new Rq(req, resp);
+    public RsData showMe() {
 
-        long loginedMemberId = rq.getCookieAsLong("loginedMemberId", 0);
+        long loginedMemberId = rq.getSessionAsLong("loginedMemberId", 0);
 
         boolean isLogined = loginedMemberId > 0;
 
@@ -73,12 +67,11 @@ public class MemberController {
 
     }
 
-//    @GetMapping("/member/addMember")
-//    @ResponseBody
-//    public String addMember(String username, String password) {
-//
-//        memberService.addMember(username, password);
-//        return "%s 회원이 추가되었습니다.".formatted(username);
-//    }
+    // 디버깅용 함수
+    @GetMapping("/member/session")
+    @ResponseBody
+    public String showSession() {
+        return rq.getSessionDebugContents().replace("\n", "<br>");
+    }
 
 }

@@ -27,7 +27,7 @@ public class MemberService {
             return RsData.of("F-2", "%s(은)는 존재하지 않는 회원입니다.".formatted(username));
         }
 
-        return RsData.of("S-1", "%s 님 환영합니다.".formatted(username), member.getId());
+        return RsData.of("S-1", "%s 님 환영합니다.".formatted(username), member);
     }
     public Member findByUsername(String username) {
         return memberRepository.findByUsername(username);

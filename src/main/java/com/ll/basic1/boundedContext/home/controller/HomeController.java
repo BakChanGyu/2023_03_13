@@ -21,7 +21,6 @@ public class HomeController {
     public final List<Person> people;
 
     // 필드주입
-    @Autowired
     private MemberService memberService;
 
 
