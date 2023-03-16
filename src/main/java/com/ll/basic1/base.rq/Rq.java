@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -84,7 +83,8 @@ public class Rq {
     private String getSessionStr(String name, String defaultValue) {
         try {
             String value = (String) req.getSession().getAttribute(name);
-            if (value == null) return defaultValue;
+            if (value == null)
+                return defaultValue;
             return value;
         } catch (Exception e) {
             return defaultValue;
@@ -120,5 +120,15 @@ public class Rq {
             sb.append(String.format("%s: %s\n", attributeName, attributeValue));
         }
         return sb.toString();
+    }
+
+    public boolean isLogined() {
+        long loginedMemberId = getSessionAsLong("loginedMemberId", 0);
+
+        return loginedMemberId > 0;
+    }
+
+    public boolean isLogout() {
+        return !isLogined();
     }
 }

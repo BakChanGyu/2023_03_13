@@ -4,10 +4,7 @@ import com.ll.basic1.base.RsData;
 import com.ll.basic1.boundedContext.member.entitiy.Member;
 import com.ll.basic1.base.rq.Rq;
 import com.ll.basic1.boundedContext.member.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +17,26 @@ public class MemberController {
 
     @GetMapping("/member/login")
     @ResponseBody
-    public RsData login(String username, String password) {
+    public String showlogin() {
+        if (rq.isLogined()) {
+            return """
+                    <h1>이미 로그인 되었습니다.</h1>
+                    """.stripIndent(); // 이거머임
+        }
+
+        return """
+                <h1>로그인</h1>
+                <form action="doLogin">
+                <input type="text" placeholder="아이디" name "username">
+                <input type="password" placeholder="비밀번호" name "password">
+                <input type="submit" value="로그인">
+                </form>
+                """;
+    }
+
+    @GetMapping("/member/doLogin")
+    @ResponseBody
+    public RsData dologin(String username, String password) {
 
         if (username == null || username.trim().length() ==0 ) {
             return RsData.of("F-3", "username(을)을 입력해주세요.");
