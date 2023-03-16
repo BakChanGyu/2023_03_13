@@ -6,7 +6,9 @@ import com.ll.basic1.base.rq.Rq;
 import com.ll.basic1.boundedContext.member.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -20,7 +22,7 @@ public class MemberController {
         return "usr/member/login";
     }
 
-    @GetMapping("/member/doLogin")
+    @PostMapping("/member/login")
     @ResponseBody
     public RsData dologin(String username, String password) {
 
@@ -53,9 +55,9 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/member/me")
+//    @GetMapping("/member/me")
     @ResponseBody
-    public RsData showMe() {
+    public RsData showedMe() {
 
         long loginedMemberId = rq.getSessionAsLong("loginedMemberId", 0);
 
@@ -66,6 +68,18 @@ public class MemberController {
         }
         Member member = memberService.findById(loginedMemberId);
         return RsData.of("S-1", "당신의 username(은)는 %s 입니다.".formatted(member.getUsername()), member.getId());
+
+    }
+
+    @GetMapping("/member/me")
+    public String showMe(Model model) {
+        long loginedMemberId = rq.getLoginedMemberId();
+
+        Member member = memberService.findById(loginedMemberId);
+
+        model.addAttribute("me", member);
+
+        return "usr/member/me";
 
     }
 
