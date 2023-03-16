@@ -2,8 +2,10 @@ package com.ll.basic1.boundedContext.member.entitiy;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+
 @AllArgsConstructor
-@Data
+@Getter
 public class Member {
     private static long lastId;
     private long id;
