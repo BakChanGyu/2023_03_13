@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  thymeleaf:
+    cache: false # 타임리프 캐시끄기
+    prefix: file:src/main/resources/templates/ # 타임리프 캐시끄기
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/basic1__dev??characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: hong
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: create # db자동생성 (엔티티 클래스만 만들어주면댐)
