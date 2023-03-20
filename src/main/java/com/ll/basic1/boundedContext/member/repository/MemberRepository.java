@@ -1,36 +1,14 @@
 package com.ll.basic1.boundedContext.member.repository;
 
 import com.ll.basic1.boundedContext.member.entitiy.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
+
 
 @Repository
-public class MemberRepository {
-    private List<Member> members;
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    public MemberRepository() {
-        members = new ArrayList<>();
-        members.add(new Member("user1", "1234"));
-        members.add(new Member("giving", "12349"));
-    }
-    public void save(String username, String password) {
-        List<Member> members = new ArrayList<>();
-        Member member = new Member(username, password);
-        members.add(member);
-    }
-    public Member findByUsername(String username) {
-        return members.stream()
-                .filter(m -> m.getUsername().equals(username))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public Member findById(long id) {
-        return members.stream()
-                .filter(m -> m.getId() == id)
-                .findFirst()
-                .orElse(null);
-    }
+    Optional<Member> findByUsername(String username);
 }

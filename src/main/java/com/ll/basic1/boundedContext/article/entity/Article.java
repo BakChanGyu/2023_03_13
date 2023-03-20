@@ -17,7 +17,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Builder // builder 패턴
 @Getter
-@Setter
+// setter가 없을때 빌더는 강제주입해버린다. 빌더 쓸때는
+// 이 빌더가 활용할 수 있는 방법의 가짓수를 늘려준다는 마인드로 아래 두개 어노테이션을붙였다.
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
